@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, only: [:show, :create]
+  before_action :authenticate_user!, only: %i[show create]
   def index
     @posts = Post.all
     @post = Post.new
@@ -12,7 +12,7 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new(post_params)
-    @post.user_id =current_user.id
+    @post.user_id = current_user.id
     if @post.save
       redirect_back(fallback_location: root_path)
     else
@@ -20,10 +20,9 @@ class PostsController < ApplicationController
     end
   end
 
+  private
 
-private
-def post_params
-  params.require(:post).permit(:content)
-end
-
+  def post_params
+    params.require(:post).permit(:content)
+  end
 end
